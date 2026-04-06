@@ -1,0 +1,9 @@
+{
+  "name": "smartbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple full-stack sportsbook quiz app",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
