@@ -15,19 +15,15 @@ if (!ADMIN_PASSWORD) {
     "ADMIN_PASSWORD environment variable is required. Set it before starting the server."
   );
 }
+const SESSION_SECRET = process.env.SESSION_SECRET || ADMIN_PASSWORD;
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
 const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, "public");
-const DATA_DIR = path.join(ROOT, "data");
+const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(ROOT, "data"));
 const DB_FILE = path.join(DATA_DIR, "db.json");
 const SECURE_COOKIE =
   process.env.NODE_ENV === "production" || process.env.COOKIE_SECURE === "true";
-
-// ---------------------------------------------------------------------------
-// Sessions
-// ---------------------------------------------------------------------------
-
-const sessions = new Map();
 
 // ---------------------------------------------------------------------------
 // Rate limiter
@@ -56,7 +52,7 @@ setInterval(() => {
 }, RATE_WINDOW_MS);
 
 // ---------------------------------------------------------------------------
-// DB write queue — serialises read-modify-write cycles
+// DB write queue - serialises read-modify-write cycles
 // ---------------------------------------------------------------------------
 
 let dbWriteQueue = Promise.resolve();
@@ -93,7 +89,9 @@ async function loadDb() {
 }
 
 async function saveDb(db) {
-  await fs.promises.writeFile(DB_FILE, JSON.stringify(db, null, 2));
+  const tempFile = `${DB_FILE}.tmp`;
+  await fs.promises.writeFile(tempFile, JSON.stringify(db, null, 2));
+  await fs.promises.rename(tempFile, DB_FILE);
 }
 
 // ---------------------------------------------------------------------------
@@ -117,7 +115,7 @@ const operatorCatalog = {
     name: "BetMGM",
     url: "https://sports.betmgm.com/",
     blurb:
-      "Strong straight-bet pricing and a built-in casino — one app for both."
+      "Strong straight-bet pricing and a built-in casino - one app for both."
   },
   caesars: {
     name: "Caesars",
@@ -142,7 +140,7 @@ const recommendationsBySegment = {
     {
       slug: "fanduel",
       reason:
-        "The app is the easiest to learn — most new bettors place their first bet here."
+        "The app is the easiest to learn - most new bettors place their first bet here."
     },
     {
       slug: "fanatics",
@@ -159,7 +157,7 @@ const recommendationsBySegment = {
     {
       slug: "fanduel",
       reason:
-        "Fast to open, fast to bet — fits a weekend routine without demanding your attention."
+        "Fast to open, fast to bet - fits a weekend routine without demanding your attention."
     },
     {
       slug: "betmgm",
@@ -169,14 +167,14 @@ const recommendationsBySegment = {
     {
       slug: "caesars",
       reason:
-        "Caesars Rewards points stack up even from casual play, which other books don't match."
+        "Caesars Rewards points stack up even from casual play, which other books do not match."
     }
   ],
   Frequent: [
     {
       slug: "draftkings",
       reason:
-        "More markets per game than any competitor — you won't run out of angles."
+        "More markets per game than any competitor - you will not run out of angles."
     },
     {
       slug: "fanduel",
@@ -193,7 +191,7 @@ const recommendationsBySegment = {
     {
       slug: "draftkings",
       reason:
-        "The deepest same-game parlay builder — more legs, more props, more combinations."
+        "The deepest same-game parlay builder - more legs, more props, more combinations."
     },
     {
       slug: "fanduel",
@@ -220,7 +218,7 @@ const recommendationsBySegment = {
     {
       slug: "fanduel",
       reason:
-        "Reliable as a daily secondary book — sharp product, few outages, fast payouts."
+        "Reliable as a daily secondary book - sharp product, few outages, fast payouts."
     }
   ]
 };
@@ -538,22 +536,101 @@ function parseCookies(req) {
   }, {});
 }
 
-function getSession(req, res) {
-  const cookies = parseCookies(req);
-  let sessionId = cookies.smartbook_sid;
+function toBase64Url(input) {
+  return Buffer.from(input)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+}
 
-  if (!sessionId || !sessions.has(sessionId)) {
-    sessionId = crypto.randomBytes(18).toString("hex");
-    const csrfToken = crypto.randomBytes(18).toString("hex");
-    sessions.set(sessionId, { csrfToken });
-    const secure = SECURE_COOKIE ? "; Secure" : "";
-    res.setHeader(
-      "Set-Cookie",
-      `smartbook_sid=${sessionId}; Path=/; HttpOnly; SameSite=Lax${secure}`
-    );
+function fromBase64Url(input) {
+  const normalized = String(input || "")
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+  const padding = normalized.length % 4 === 0 ? "" : "=".repeat(4 - (normalized.length % 4));
+  return Buffer.from(normalized + padding, "base64").toString("utf8");
+}
+
+function signValue(value) {
+  return crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(value)
+    .digest("base64url");
+}
+
+function defaultSession() {
+  return {
+    csrfToken: crypto.randomBytes(18).toString("hex"),
+    quizAnswers: {},
+    quizStarted: false,
+    resultsTrackedForLeadId: null,
+    currentLeadId: null,
+    utms: {},
+    isAdmin: false
+  };
+}
+
+function loadSessionFromCookie(req) {
+  const cookies = parseCookies(req);
+  const raw = cookies.smartbook_session;
+  if (!raw) return defaultSession();
+
+  const [payload, signature] = raw.split(".");
+  if (!payload || !signature || signValue(payload) !== signature) {
+    return defaultSession();
   }
 
-  return sessions.get(sessionId);
+  try {
+    const session = JSON.parse(fromBase64Url(payload));
+    return {
+      ...defaultSession(),
+      ...session,
+      quizAnswers: session.quizAnswers || {},
+      utms: session.utms || {}
+    };
+  } catch (_) {
+    return defaultSession();
+  }
+}
+
+function serializeSessionCookie(session) {
+  const payload = toBase64Url(
+    JSON.stringify({
+      csrfToken: session.csrfToken,
+      quizAnswers: session.quizAnswers || {},
+      quizStarted: Boolean(session.quizStarted),
+      resultsTrackedForLeadId: session.resultsTrackedForLeadId || null,
+      currentLeadId: session.currentLeadId || null,
+      utms: session.utms || {},
+      isAdmin: Boolean(session.isAdmin)
+    })
+  );
+  const signature = signValue(payload);
+  const secure = SECURE_COOKIE ? "; Secure" : "";
+  return `smartbook_session=${payload}.${signature}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESSION_MAX_AGE_SECONDS}${secure}`;
+}
+
+function getSession(req, res) {
+  const session = loadSessionFromCookie(req);
+  const originalWriteHead = res.writeHead.bind(res);
+  const originalEnd = res.end.bind(res);
+
+  res.writeHead = function patchedWriteHead(...args) {
+    if (!res.getHeader("Set-Cookie")) {
+      res.setHeader("Set-Cookie", serializeSessionCookie(session));
+    }
+    return originalWriteHead(...args);
+  };
+
+  res.end = function patchedEnd(...args) {
+    if (!res.headersSent && !res.getHeader("Set-Cookie")) {
+      res.setHeader("Set-Cookie", serializeSessionCookie(session));
+    }
+    return originalEnd(...args);
+  };
+
+  return session;
 }
 
 function csrfField(session) {
@@ -600,12 +677,21 @@ function rememberUtms(session, searchParams) {
 }
 
 function redirect(res, location) {
-  res.writeHead(302, { Location: location });
+  res.writeHead(302, {
+    Location: location,
+    "Cache-Control": "no-store"
+  });
   res.end();
 }
 
 function sendHtml(res, html, statusCode = 200) {
-  res.writeHead(statusCode, { "Content-Type": "text/html; charset=utf-8" });
+  res.writeHead(statusCode, {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "no-store",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY"
+  });
   res.end(html);
 }
 
@@ -615,7 +701,11 @@ function sendText(
   statusCode = 200,
   contentType = "text/plain; charset=utf-8"
 ) {
-  res.writeHead(statusCode, { "Content-Type": contentType });
+  res.writeHead(statusCode, {
+    "Content-Type": contentType,
+    "Cache-Control": "no-store",
+    "X-Content-Type-Options": "nosniff"
+  });
   res.end(text);
 }
 
@@ -654,6 +744,14 @@ function normalizeEmail(value) {
 function formatField(value, fallback = "None") {
   const text = String(value || "").trim();
   return text || fallback;
+}
+
+function getClientIp(req) {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (typeof forwarded === "string" && forwarded.trim()) {
+    return forwarded.split(",")[0].trim();
+  }
+  return req.socket.remoteAddress || "";
 }
 
 // ---------------------------------------------------------------------------
@@ -1000,8 +1098,8 @@ function renderQuizStep(step, session) {
 function renderQuizMessage(session) {
   const isNew = (session.quizAnswers || {}).sportsbookExperience === "No, I’m new";
   const copy = isNew
-    ? "Got it — we’ll focus on the easiest apps with the best signup bonuses."
-    : "Perfect — we’ll prioritize odds, speed, and stronger long-term options.";
+    ? "Got it - we'll focus on the easiest apps with the best signup bonuses."
+    : "Perfect - we'll prioritize odds, speed, and stronger long-term options.";
 
   return renderLayout(
     "Quick note",
@@ -1341,6 +1439,20 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "GET" && pathname === "/health") {
+      sendText(
+        res,
+        JSON.stringify({
+          ok: true,
+          service: "smartbook",
+          timestamp: new Date().toISOString()
+        }),
+        200,
+        "application/json; charset=utf-8"
+      );
+      return;
+    }
+
     // ---- landing ----
 
     if (req.method === "GET" && pathname === "/") {
@@ -1410,7 +1522,7 @@ const server = http.createServer(async (req, res) => {
       }
 
       if (req.method === "POST") {
-        const ip = req.socket.remoteAddress || "";
+        const ip = getClientIp(req);
         if (isRateLimited(ip)) {
           sendText(
             res,
@@ -1471,7 +1583,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "POST" && pathname === "/email") {
-      const ip = req.socket.remoteAddress || "";
+      const ip = getClientIp(req);
       if (isRateLimited(ip)) {
         sendText(res, "Too many requests. Please wait and try again.", 429);
         return;
