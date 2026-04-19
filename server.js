@@ -128,6 +128,24 @@ const operatorCatalog = {
     url: "https://sportsbook.fanatics.com/",
     blurb:
       "A stripped-down app focused on earning rewards every time you bet."
+  },
+  kalshi: {
+    name: "Kalshi",
+    url: "https://kalshi.com/",
+    blurb:
+      "A federally regulated prediction market where you trade on real-world outcomes — politics, finance, sports, and more."
+  },
+  polymarket: {
+    name: "Polymarket",
+    url: "https://polymarket.com/",
+    blurb:
+      "A crypto-native prediction market with broad event coverage for users who want pure outcome trading."
+  },
+  bet365: {
+    name: "Bet365",
+    url: "https://www.bet365.com/",
+    blurb:
+      "One of the world's largest sportsbooks with sharp lines, deep markets, and fast payouts."
   }
 };
 
@@ -136,89 +154,72 @@ const operatorCatalog = {
 // ---------------------------------------------------------------------------
 
 const recommendationsBySegment = {
-  Beginner: [
+  prediction: [
     {
-      slug: "fanduel",
+      slug: "kalshi",
       reason:
-        "The app is the easiest to learn - most new bettors place their first bet here."
+        "The clearest first step if you want to trade outcomes directly without a traditional sportsbook flow."
     },
     {
-      slug: "fanatics",
+      slug: "draftkings",
       reason:
-        "Earn rewards from your very first wager, with no learning curve to slow you down."
+        "The best add-on if you also want full sportsbook coverage for sports and props."
     },
     {
-      slug: "betmgm",
+      slug: "polymarket",
       reason:
-        "Try slots or table games alongside sports if you want variety while you're learning."
+        "A strong second prediction-market option if you want broader event coverage and more outcome variety."
     }
   ],
-  Casual: [
+  casual: [
     {
       slug: "fanduel",
       reason:
-        "Fast to open, fast to bet - fits a weekend routine without demanding your attention."
+        "Fast to open, fast to bet — fits a weekend routine without demanding your attention."
     },
     {
       slug: "betmgm",
       reason:
-        "One app for sports and casino means fewer accounts to manage."
+        "A practical all-in-one pick if you want sports and casino access in a single account."
     },
     {
       slug: "caesars",
       reason:
-        "Caesars Rewards points stack up even from casual play, which other books do not match."
+        "Worth comparing if ongoing rewards matter and you want extra value from lighter betting."
     }
   ],
-  Frequent: [
+  high_value: [
     {
       slug: "draftkings",
       reason:
-        "More markets per game than any competitor - you will not run out of angles."
+        "Top-tier promos and the deepest market selection — maximises value for active, high-intent bettors."
     },
     {
       slug: "fanduel",
       reason:
-        "Fastest bet placement flow of the major books, built for volume."
+        "The sharpest mainstream book with fast bet placement — a must-have second account for line shopping."
     },
     {
       slug: "betmgm",
       reason:
-        "A useful second book for line-shopping when DraftKings or FanDuel odds are off."
+        "A useful third option to compare prices and keep more than one solid book in rotation."
     }
   ],
-  "Parlay-heavy": [
-    {
-      slug: "draftkings",
-      reason:
-        "The deepest same-game parlay builder - more legs, more props, more combinations."
-    },
-    {
-      slug: "fanduel",
-      reason:
-        "The cleanest bet slip for stacking parlays quickly without mistakes."
-    },
-    {
-      slug: "caesars",
-      reason:
-        "Parlay-specific promos show up often, which can add edge on top of your picks."
-    }
-  ],
-  Advanced: [
-    {
-      slug: "draftkings",
-      reason:
-        "Widest market variety — alt lines, player props, and game props others don't carry."
-    },
+  sharp: [
     {
       slug: "betmgm",
       reason:
-        "Consistently competitive odds on straight bets, useful for line-shopping rotation."
+        "The best first stop here if you care about cleaner pricing, faster execution, and a more serious betting setup."
+    },
+    {
+      slug: "draftkings",
+      reason:
+        "A strong comparison book for line shopping and broader alt-line coverage."
     },
     {
       slug: "fanduel",
       reason:
-        "Reliable as a daily secondary book - sharp product, few outages, fast payouts."
+        "Another smart account to keep open when you want one more clean price-check before placing a bet."
     }
   ]
 };
@@ -228,102 +229,75 @@ const recommendationsBySegment = {
 // ---------------------------------------------------------------------------
 
 const segmentCopy = {
-  Beginner: {
-    headline: "3 sportsbooks built for new bettors",
+  prediction: {
+    headline: "Your best fit is a prediction-market route",
     intro:
-      "You're just getting started. These books make it easy to learn the ropes, deposit small, and bet without feeling overwhelmed."
+      "Based on your answers, prediction markets look like the fastest path to a better fit. These picks make it easier to trade outcomes directly and start with platforms that match how you actually want to bet."
   },
-  Casual: {
+  casual: {
     headline: "3 sportsbooks that keep it simple",
     intro:
       "You bet on your own schedule without overthinking it. These books are clean, reliable, and won't waste your time."
   },
-  Frequent: {
-    headline: "3 sportsbooks for your daily action",
+  high_value: {
+    headline: "3 sportsbooks built for high-value bettors",
     intro:
-      "You're in the app most days and need speed, depth, and a product that holds up under heavy use."
+      "Your profile points to a bettor who's serious about value. These books give you the best combination of promos, market depth, and line quality to maximize every session."
   },
-  "Parlay-heavy": {
-    headline: "3 sportsbooks built for parlay bettors",
+  sharp: {
+    headline: "3 sportsbooks for sharp bettors",
     intro:
-      "You build combos and same-game parlays regularly. These books have the best builders and the deepest parlay markets."
-  },
-  Advanced: {
-    headline: "3 sportsbooks for experienced bettors",
-    intro:
-      "You shop lines, rotate books, and know what you want. These give you the market depth and control to bet your way."
+      "You look more value-driven and experienced than the average bettor. These books are the best fit for stronger pricing, cleaner execution, and longer-term use."
   }
 };
 
 // ---------------------------------------------------------------------------
-// Questions — 8 total
+// Questions
 // ---------------------------------------------------------------------------
 
 const questions = [
   {
-    key: "mainGoal",
-    label: "What are you mainly looking for in a sportsbook?",
+    key: "market_type",
+    label: "What type of platform are you looking for?",
     type: "radio",
     options: [
-      "Get the biggest bonus",
-      "Find the easiest app to use",
-      "Get the best odds",
-      "Bet on specific sports/events"
+      { value: "sportsbook", label: "Traditional sportsbook" },
+      { value: "prediction", label: "Prediction market" },
+      { value: "both", label: "Open to both" },
+      { value: "unsure", label: "Not sure yet" }
     ]
   },
   {
-    key: "sportsbookExperience",
-    label: "Have you used a sportsbook before?",
+    key: "interest",
+    label: "What are you most interested in betting on?",
     type: "radio",
     options: [
-      "No, I’m new",
-      "Yes, but not often",
-      "Yes, regularly"
+      { value: "sports", label: "Sports" },
+      { value: "politics", label: "Politics & elections" },
+      { value: "finance", label: "Finance & stocks" },
+      { value: "mixed", label: "Mix of everything" }
     ]
   },
   {
-    key: "betFrequency",
-    label: "How often do you plan to bet?",
+    key: "experience",
+    label: "How experienced are you?",
     type: "radio",
     options: [
-      "Occasionally (few times a month)",
-      "Weekly",
-      "Multiple times per week"
+      { value: "new", label: "Brand new" },
+      { value: "casual", label: "Some experience" },
+      { value: "regular", label: "Very experienced" }
     ]
   },
   {
-    key: "betPreference",
-    label: "What type of bets do you usually prefer?",
+    key: "intent",
+    label: "What is your main goal?",
     type: "radio",
     options: [
-      "Parlays / Same Game Parlays",
-      "Straight bets",
-      "Live betting",
-      "Not sure yet"
+      { value: "profit", label: "Make money consistently" },
+      { value: "fun", label: "Have fun and stay engaged" },
+      { value: "opinion", label: "Back my opinion on outcomes" },
+      { value: "try", label: "Just exploring options" }
     ]
-  },
-  {
-    key: "topPriority",
-    label: "What matters most to you?",
-    type: "radio",
-    options: [
-      "Bonuses & promotions",
-      "Best odds",
-      "Ease of use",
-      "Fast withdrawals"
-    ]
-  },
-  {
-    key: "startingDeposit",
-    label: "How much would you likely deposit to start?",
-    type: "radio",
-    options: ["Under $50", "$50–$200", "$200+"]
-  },
-  {
-    key: "crossSellInterest",
-    label: "Would you also be interested in casino or DFS offers?",
-    type: "radio",
-    options: ["Yes", "Maybe", "No"]
   },
   {
     key: "state",
@@ -333,7 +307,7 @@ const questions = [
   }
 ];
 
-const stateOptions = [
+const US_STATES = [
   "Alabama",
   "Alaska",
   "Arizona",
@@ -387,7 +361,53 @@ const stateOptions = [
   "Wyoming"
 ];
 
-questions[7].options = stateOptions;
+const STATES_WITH_LEGAL_ONLINE_SPORTSBOOK = new Set([
+  "Arizona",
+  "Colorado",
+  "Connecticut",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "New Hampshire",
+  "New Jersey",
+  "New York",
+  "North Carolina",
+  "Ohio",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "Tennessee",
+  "Vermont",
+  "Virginia",
+  "West Virginia",
+  "Wyoming",
+  "District of Columbia"
+]);
+
+questions.find((question) => question.key === "state").options = US_STATES;
+
+function isSportsbookLegal(state) {
+  return STATES_WITH_LEGAL_ONLINE_SPORTSBOOK.has(state);
+}
+
+// ---------------------------------------------------------------------------
+// Option helpers — questions may use {value, label} objects or plain strings
+// ---------------------------------------------------------------------------
+
+function getOptionValue(opt) {
+  return typeof opt === "object" && opt !== null ? opt.value : opt;
+}
+
+function getOptionLabel(opt) {
+  return typeof opt === "object" && opt !== null ? opt.label : opt;
+}
 
 const utmKeys = [
   "utm_source",
@@ -398,128 +418,128 @@ const utmKeys = [
 ];
 
 // ---------------------------------------------------------------------------
-// Segment scoring
+// LTV scoring, segmentation, and routing
 // ---------------------------------------------------------------------------
 
+function computeLTV({ intent, experience, market_type }) {
+  let score = 0;
+  if (intent === "profit") score += 2;
+  else if (intent === "fun") score += 1;
+
+  if (experience === "casual") score += 1;
+  else if (experience === "regular") score += 2;
+
+  if (market_type === "prediction" || market_type === "both") score += 1;
+
+  return score;
+}
+
+function assignSegment({
+  intent,
+  interest,
+  experience,
+  ltv_score,
+  market_type
+}) {
+  if (market_type === "sportsbook") {
+    if (ltv_score >= 4 && experience === "regular" && intent === "profit") {
+      return "sharp";
+    }
+    if (ltv_score >= 3) {
+      return "high_value";
+    }
+    return "casual";
+  }
+
+  if (market_type === "prediction") {
+    return "prediction";
+  }
+
+  if (
+    market_type === "both" &&
+    (interest === "politics" || interest === "finance" || intent === "opinion")
+  ) {
+    return "prediction";
+  }
+
+  if (
+    market_type === "unsure" &&
+    (intent === "opinion" || interest === "politics" || interest === "finance")
+  ) {
+    return "prediction";
+  }
+
+  if (ltv_score >= 4 && experience === "regular" && intent === "profit") {
+    return "sharp";
+  }
+
+  if (ltv_score >= 3) {
+    return "high_value";
+  }
+
+  return "casual";
+}
+
+function routeUser(segment, { interest, market_type } = {}) {
+  let route;
+  switch (segment) {
+    case "prediction":
+      route = {
+        primary_route: "kalshi",
+        secondary_route:
+          interest === "sports" || interest === "mixed" ? "draftkings" : "polymarket"
+      };
+      break;
+    case "sharp":
+      route = { primary_route: "betmgm", secondary_route: "draftkings" };
+      break;
+    case "high_value":
+      route = { primary_route: "draftkings", secondary_route: "fanduel" };
+      break;
+    case "casual":
+      route = { primary_route: "fanduel", secondary_route: "draftkings" };
+      break;
+    default:
+      route = { primary_route: "fanduel", secondary_route: "draftkings" };
+      break;
+  }
+
+  if (market_type === "both" && segment !== "prediction") {
+    route.secondary_route = "kalshi";
+  }
+
+  return route;
+}
+
 function determineSegment(answers) {
-  const score = {
-    Beginner: 0,
-    Casual: 0,
-    Frequent: 0,
-    "Parlay-heavy": 0,
-    Advanced: 0
-  };
+  const ltv_score = computeLTV({
+    intent: answers.intent,
+    experience: answers.experience,
+    market_type: answers.market_type
+  });
+  return assignSegment({
+    intent: answers.intent,
+    interest: answers.interest,
+    experience: answers.experience,
+    ltv_score,
+    market_type: answers.market_type
+  });
+}
 
-  const add = (seg, v) => {
-    score[seg] += v;
-  };
-
-  if (answers.sportsbookExperience === "No, I’m new") {
-    add("Beginner", 5);
-    add("Casual", 2);
-  }
-  if (answers.sportsbookExperience === "Yes, but not often") {
-    add("Casual", 4);
-    add("Beginner", 1);
-  }
-  if (answers.sportsbookExperience === "Yes, regularly") {
-    add("Frequent", 3);
-    add("Advanced", 2);
-    add("Advanced", 2);
-  }
-
-  if (answers.betFrequency === "Occasionally (few times a month)") {
-    add("Beginner", 2);
-    add("Casual", 4);
-  }
-  if (answers.betFrequency === "Weekly") {
-    add("Casual", 2);
-    add("Frequent", 2);
-  }
-  if (answers.betFrequency === "Multiple times per week") {
-    add("Frequent", 4);
-    add("Advanced", 3);
-  }
-
-  if (answers.betPreference === "Parlays / Same Game Parlays") {
-    add("Parlay-heavy", 5);
-  }
-  if (answers.betPreference === "Straight bets") {
-    add("Advanced", 3);
-    add("Frequent", 1);
-  }
-  if (answers.betPreference === "Live betting") {
-    add("Frequent", 2);
-    add("Advanced", 2);
-  }
-  if (answers.betPreference === "Not sure yet") {
-    add("Beginner", 2);
-    add("Casual", 1);
-  }
-
-  if (answers.mainGoal === "Find the easiest app to use") {
-    add("Beginner", 3);
-    add("Casual", 2);
-  }
-  if (answers.mainGoal === "Get the biggest bonus") {
-    add("Casual", 2);
-    add("Beginner", 1);
-  }
-  if (answers.mainGoal === "Get the best odds") {
-    add("Advanced", 3);
-    add("Frequent", 2);
-  }
-  if (answers.mainGoal === "Bet on specific sports/events") {
-    add("Frequent", 2);
-    add("Advanced", 1);
-  }
-
-  if (answers.topPriority === "Ease of use") {
-    add("Beginner", 2);
-    add("Casual", 2);
-  }
-  if (answers.topPriority === "Best odds") {
-    add("Advanced", 3);
-    add("Frequent", 1);
-  }
-  if (answers.topPriority === "Bonuses & promotions") {
-    add("Casual", 2);
-    add("Parlay-heavy", 1);
-  }
-  if (answers.topPriority === "Fast withdrawals") {
-    add("Frequent", 2);
-    add("Advanced", 1);
-  }
-
-  if (answers.startingDeposit === "Under $50") {
-    add("Beginner", 2);
-    add("Casual", 1);
-  }
-  if (answers.startingDeposit === "$50–$200") {
-    add("Casual", 2);
-    add("Frequent", 1);
-  }
-  if (answers.startingDeposit === "$200+") {
-    add("Advanced", 3);
-    add("Frequent", 2);
-  }
-
-  if (answers.betPreference === "Parlays / Same Game Parlays") {
-    add("Parlay-heavy", 6);
-  }
-  if (answers.betPreference === "Straight bets") {
-    add("Advanced", 2);
-    add("Frequent", 1);
-  }
-
-  if (answers.crossSellInterest === "Yes") {
-    add("Casual", 2);
-  }
-  if (answers.crossSellInterest === "Maybe") {
-    add("Casual", 1);
-  }
-
-  return Object.entries(score).sort((a, b) => b[1] - a[1])[0][0];
+function determineRoutingProfile(answers) {
+  const ltv_score = computeLTV({
+    intent: answers.intent,
+    experience: answers.experience,
+    market_type: answers.market_type
+  });
+  const segment = assignSegment({
+    intent: answers.intent,
+    interest: answers.interest,
+    experience: answers.experience,
+    ltv_score,
+    market_type: answers.market_type
+  });
+  return { ltv_score, segment };
 }
 
 // ---------------------------------------------------------------------------
@@ -746,6 +766,14 @@ function formatField(value, fallback = "None") {
   return text || fallback;
 }
 
+function getLeadAnswer(lead, key, fallback = "") {
+  if (lead && lead[key] != null && lead[key] !== "") return lead[key];
+  if (lead && lead.answers && lead.answers[key] != null && lead.answers[key] !== "") {
+    return lead.answers[key];
+  }
+  return fallback;
+}
+
 function getClientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
   if (typeof forwarded === "string" && forwarded.trim()) {
@@ -776,15 +804,46 @@ async function createLead(answers) {
   return enqueueDbWrite(async () => {
     const db = await loadDb();
     const { utms = {}, ...answerValues } = answers;
-    const segment = determineSegment(answers);
+    const createdAt = new Date().toISOString();
+    const ltv_score = computeLTV({
+      intent: answers.intent,
+      experience: answers.experience,
+      market_type: answers.market_type
+    });
+    const segment = assignSegment({
+      intent: answers.intent,
+      interest: answers.interest,
+      experience: answers.experience,
+      ltv_score,
+      market_type: answers.market_type
+    });
+    const { primary_route, secondary_route } = routeUser(segment, {
+      interest: answers.interest,
+      market_type: answers.market_type
+    });
     const lead = {
       id: db.nextLeadId++,
+      user_id: crypto.randomUUID(),
       email: "",
+      created_at: createdAt,
+      intent: answers.intent,
+      experience: answers.experience,
+      frequency: answers.frequency || "occasional",
+      bet_type: answers.bet_type || "unsure",
+      interest: answers.interest,
+      market_type: answers.market_type,
+      state: answers.state || "",
+      state_override: Boolean(answers.state_override),
       segment,
+      ltv_score,
+      primary_route,
+      secondary_route,
+      clicked_primary: false,
+      clicked_secondary: false,
       answers: answerValues,
       utms,
       clickedOperators: [],
-      createdAt: new Date().toISOString()
+      createdAt
     };
     db.leads.push(lead);
     db.events.push({
@@ -834,87 +893,74 @@ async function requireLead(session, res) {
 
 function getLeadPreferences(lead) {
   const details = [];
-  if (lead.answers.betFrequency) {
-    details.push(lead.answers.betFrequency.toLowerCase());
-  }
-  if (lead.answers.betPreference === "Parlays / Same Game Parlays") {
-    details.push("a parlay-first style");
-  } else if (lead.answers.betPreference === "Straight bets") {
-    details.push("a straight-bet lean");
-  }
-  if (lead.answers.topPriority) {
-    details.push(`${lead.answers.topPriority.toLowerCase()} as your top priority`);
-  }
+  const marketType = getLeadAnswer(lead, "market_type");
+  const interest = getLeadAnswer(lead, "interest");
+  const experience = getLeadAnswer(lead, "experience");
+  const intent = getLeadAnswer(lead, "intent");
+  const state = getLeadAnswer(lead, "state");
+
+  if (marketType === "prediction") details.push("a prediction-market-first mindset");
+  else if (marketType === "both") details.push("keeping both sportsbooks and prediction markets open");
+
+  if (interest === "sports") details.push("sports-focused betting");
+  else if (interest === "politics") details.push("politics and election markets");
+  else if (interest === "finance") details.push("finance and macro outcome markets");
+
+  if (experience === "new") details.push("a beginner-friendly setup");
+  else if (experience === "regular") details.push("an experienced betting profile");
+
+  if (intent === "profit") details.push("a value-first approach");
+  else if (intent === "fun") details.push("a lighter, entertainment-first style");
+
+  if (state) details.push(`being located in ${state}`);
+
   return details.slice(0, 2);
 }
 
 function buildRecommendationCopy(lead, operator, baseReason) {
   const snippets = [];
+  const experience = getLeadAnswer(lead, "experience");
+  const intent = getLeadAnswer(lead, "intent");
+  const interest = getLeadAnswer(lead, "interest");
+  const marketType = getLeadAnswer(lead, "market_type");
+  const state = getLeadAnswer(lead, "state");
+  const stateOverride = Boolean(lead.state_override);
 
-  if (lead.segment === "Beginner") {
-    snippets.push("You wanted a simpler path into betting.");
-  }
-  if (lead.answers.sportsbookExperience === "No, I’m new") {
+  if (experience === "new") {
     snippets.push("Your answers suggest you want a smoother first-time experience.");
   }
-  if (lead.segment === "Parlay-heavy") {
-    snippets.push(
-      "Your answers pointed strongly toward parlay-driven betting."
-    );
+  if (intent === "profit" && ["draftkings", "betmgm", "bet365"].includes(operator.slug)) {
+    snippets.push("That matches a more value-driven approach where pricing and staying power matter.");
   }
-  if (
-    lead.answers.mainGoal === "Find the easiest app to use" ||
-    lead.answers.topPriority === "Ease of use"
-  ) {
-    snippets.push(
-      `${operator.name} is a good fit if ease of use matters most.`
-    );
+  if (intent === "opinion" && operator.slug === "kalshi") {
+    snippets.push("Kalshi is built for taking a clear position on what you think happens next.");
   }
-  if (
-    lead.answers.mainGoal === "Get the best odds" ||
-    lead.answers.topPriority === "Best odds"
-  ) {
-    snippets.push(
-      `${operator.name} fits better if you're focused on stronger odds and long-term value.`
-    );
+  if (interest === "politics" && operator.slug === "kalshi") {
+    snippets.push("It covers political and election markets in a way no traditional sportsbook does.");
   }
-  if (
-    lead.answers.crossSellInterest === "Yes" &&
-    ["betmgm", "caesars"].includes(operator.slug)
-  ) {
-    snippets.push(
-      "It also lines up with your interest in casino or DFS-style offers in the same ecosystem."
-    );
+  if (interest === "finance" && operator.slug === "kalshi") {
+    snippets.push("Finance and economic outcome markets are a Kalshi specialty.");
   }
-  if (
-    lead.answers.betPreference === "Parlays / Same Game Parlays" &&
-    ["draftkings", "fanduel"].includes(operator.slug)
-  ) {
-    snippets.push("That fits the way you said you like to build parlays.");
+  if (marketType === "prediction" && operator.slug === "kalshi") {
+    snippets.push("You said you want a prediction market specifically, and this is the cleanest regulated fit.");
   }
-  if (
-    lead.answers.betPreference === "Straight bets" &&
-    operator.slug === "betmgm"
-  ) {
-    snippets.push(
-      "That makes it a useful option if you lean toward straighter, cleaner card building."
-    );
+  if (marketType === "both" && operator.slug === "kalshi") {
+    snippets.push("Because you are open to both, this gives you a prediction-market lane alongside a regular sportsbook.");
   }
-  if (lead.answers.startingDeposit === "Under $50") {
-    snippets.push(
-      "It feels approachable if you're starting with a smaller bankroll."
-    );
+  if (operator.slug === "polymarket") {
+    snippets.push("It is worth opening if you want another outcome-trading option before deciding where to start.");
   }
-  if (lead.answers.betFrequency === "Multiple times per week") {
-    snippets.push(
-      "It can hold up better if you're planning to bet regularly."
-    );
+  if (interest === "sports" && operator.slug === "draftkings") {
+    snippets.push("It is a strong click if you want deeper sports markets and broader game coverage right away.");
   }
-  if (lead.answers.mainGoal === "Get the biggest bonus") {
-    snippets.push("That lines up with trying to maximize signup value right away.");
+  if (interest === "sports" && operator.slug === "fanduel") {
+    snippets.push("It is one of the fastest mainstream apps to get through if you want to start betting quickly.");
   }
-  if (lead.answers.mainGoal === "Bet on specific sports/events") {
-    snippets.push("It works better if you're targeting specific sports or event types.");
+  if (stateOverride && operator.slug === "kalshi") {
+    snippets.push(`Because online sportsbooks are limited in ${state}, this is the most accessible fit right now.`);
+  }
+  if (state && !stateOverride && ["fanduel", "draftkings", "betmgm"].includes(operator.slug)) {
+    snippets.push(`Assuming standard availability in ${state}, this should be a straightforward option to try.`);
   }
 
   return [baseReason, ...snippets].slice(0, 3);
@@ -934,14 +980,22 @@ async function buildCsv() {
     "id",
     "email",
     "segment",
+    "user_id",
+    "market_type",
     "state",
-    "mainGoal",
-    "sportsbookExperience",
-    "betFrequency",
-    "betPreference",
+    "state_override",
+    "primary_route",
+    "secondary_route",
+    "clicked_primary",
+    "clicked_secondary",
+    "ltv_score",
+    "intent",
+    "experience",
+    "frequency",
+    "bet_type",
+    "interest",
     "topPriority",
     "startingDeposit",
-    "crossSellInterest",
     "utm_source",
     "utm_medium",
     "utm_campaign",
@@ -951,7 +1005,7 @@ async function buildCsv() {
     "createdAt"
   ];
 
-  const quote = (v) => `"${String(v || "").replace(/"/g, '""')}"`;
+  const quote = (v) => '"' + String(v || "").replace(/"/g, '""') + '"';
   const lines = [
     headers.join(","),
     ...db.leads.map((lead) =>
@@ -959,23 +1013,31 @@ async function buildCsv() {
         lead.id,
         lead.email,
         lead.segment,
-        lead.answers.state,
-        lead.answers.mainGoal,
-        lead.answers.sportsbookExperience,
-        lead.answers.betFrequency,
-        lead.answers.betPreference,
-        lead.answers.topPriority,
-        lead.answers.startingDeposit,
-        lead.answers.crossSellInterest,
+        lead.user_id || "",
+        getLeadAnswer(lead, "market_type", ""),
+        getLeadAnswer(lead, "state", ""),
+        lead.state_override === true ? "true" : "false",
+        lead.primary_route || "",
+        lead.secondary_route || "",
+        lead.clicked_primary === true ? "true" : "false",
+        lead.clicked_secondary === true ? "true" : "false",
+        lead.ltv_score != null ? lead.ltv_score : "",
+        getLeadAnswer(lead, "intent", ""),
+        getLeadAnswer(lead, "experience", ""),
+        getLeadAnswer(lead, "frequency", ""),
+        getLeadAnswer(lead, "bet_type", ""),
+        getLeadAnswer(lead, "interest", ""),
+        getLeadAnswer(lead, "topPriority", ""),
+        getLeadAnswer(lead, "startingDeposit", ""),
         formatField(lead.utms?.utm_source, ""),
         formatField(lead.utms?.utm_medium, ""),
         formatField(lead.utms?.utm_campaign, ""),
         formatField(lead.utms?.utm_term, ""),
         formatField(lead.utms?.utm_content, ""),
-        lead.clickedOperators
+        (Array.isArray(lead.clickedOperators) ? lead.clickedOperators : [])
           .map((slug) => operatorCatalog[slug]?.name || slug)
           .join("|"),
-        lead.createdAt
+        lead.createdAt || lead.created_at || ""
       ]
         .map(quote)
         .join(",")
@@ -1027,9 +1089,17 @@ function renderLandingPage() {
 
 function renderQuizStep(step, session) {
   const question = questions[step - 1];
-  const total = questions.length;
+  const answers = session.quizAnswers || {};
+  const shouldAskState =
+    step === 5 ||
+    (answers.market_type &&
+      answers.interest &&
+      answers.experience &&
+      answers.intent &&
+      determineSegment(answers) !== "prediction");
+  const total = shouldAskState ? 5 : 4;
   const percent = Math.round((step / total) * 100);
-  const currentValue = (session.quizAnswers || {})[question.key] || "";
+  const currentValue = answers[question.key] || "";
   const isLast = step === total;
 
   let optionsHtml;
@@ -1038,10 +1108,13 @@ function renderQuizStep(step, session) {
       <option value="">Select one</option>
       ${question.options
         .map(
-          (opt) =>
-            `<option value="${escapeHtml(opt)}" ${
-              currentValue === opt ? "selected" : ""
-            }>${escapeHtml(opt)}</option>`
+          (opt) => {
+            const val = getOptionValue(opt);
+            const lbl = getOptionLabel(opt);
+            return `<option value="${escapeHtml(val)}" ${
+              currentValue === val ? "selected" : ""
+            }>${escapeHtml(lbl)}</option>`;
+          }
         )
         .join("")}
     </select>`;
@@ -1049,12 +1122,14 @@ function renderQuizStep(step, session) {
     optionsHtml = `<div class="option-list">
       ${question.options
         .map(
-          (opt) => `<label class="option-pill">
-            <input type="radio" name="${question.key}" value="${escapeHtml(
-            opt
-          )}" ${currentValue === opt ? "checked" : ""} required />
-            <span>${escapeHtml(opt)}</span>
-          </label>`
+          (opt) => {
+            const val = getOptionValue(opt);
+            const lbl = getOptionLabel(opt);
+            return `<label class="option-pill">
+            <input type="radio" name="${question.key}" value="${escapeHtml(val)}" ${currentValue === val ? "checked" : ""} required />
+            <span>${escapeHtml(lbl)}</span>
+          </label>`;
+          }
         )
         .join("")}
     </div>`;
@@ -1095,35 +1170,6 @@ function renderQuizStep(step, session) {
   );
 }
 
-function renderQuizMessage(session) {
-  const isNew = (session.quizAnswers || {}).sportsbookExperience === "No, I’m new";
-  const copy = isNew
-    ? "Got it - we'll focus on the easiest apps with the best signup bonuses."
-    : "Perfect - we'll prioritize odds, speed, and stronger long-term options.";
-
-  return renderLayout(
-    "Quick note",
-    `<main class="content-stack narrow">
-      <section class="progress-wrap" aria-label="Progress">
-        <div class="progress-meta">
-          <span class="eyebrow">Question 2 of 8</span>
-        </div>
-        <div class="progress-track">
-          <span class="progress-fill" style="width: 25%"></span>
-        </div>
-      </section>
-      <section class="question-card quiz-message-card">
-        <span class="question-number">Quick note</span>
-        <strong>${escapeHtml(copy)}</strong>
-      </section>
-      <div class="quiz-nav">
-        <a class="button button-secondary" href="/quiz/2">Back</a>
-        <a class="button button-primary" href="/quiz/3">Continue</a>
-      </div>
-    </main>`
-  );
-}
-
 function renderEmailPage(session, error = "") {
   return renderLayout(
     "Almost there",
@@ -1138,7 +1184,7 @@ function renderEmailPage(session, error = "") {
       </section>
       <section class="page-intro">
         <h1>Your results are ready</h1>
-        <p>We matched you with 3 sportsbooks based on your answers. Enter your email to see your personalised picks.</p>
+        <p>We matched you with your best-fit operators based on your answers. Enter your email to unlock your personalised picks.</p>
       </section>
       ${error ? `<p class="notice notice-error">${escapeHtml(error)}</p>` : ""}
       <form method="POST" action="/email" class="stack-form">
@@ -1194,9 +1240,41 @@ function renderAnalyzingPage() {
 }
 
 function renderResultsPage(lead) {
-  const recommendations =
-    recommendationsBySegment[lead.segment] || recommendationsBySegment.Casual;
-  const copy = segmentCopy[lead.segment] || segmentCopy.Casual;
+  const segmentRecommendations =
+    recommendationsBySegment[lead.segment] || recommendationsBySegment.casual;
+  const copy = segmentCopy[lead.segment] || segmentCopy.casual;
+  const primaryRoute = lead.primary_route || null;
+  const secondaryRoute = lead.secondary_route || null;
+  const orderedSlugs = [];
+
+  if (primaryRoute && operatorCatalog[primaryRoute]) orderedSlugs.push(primaryRoute);
+  if (
+    secondaryRoute &&
+    operatorCatalog[secondaryRoute] &&
+    !orderedSlugs.includes(secondaryRoute)
+  ) {
+    orderedSlugs.push(secondaryRoute);
+  }
+  for (const item of segmentRecommendations) {
+    if (!orderedSlugs.includes(item.slug) && operatorCatalog[item.slug]) {
+      orderedSlugs.push(item.slug);
+    }
+  }
+
+  const recommendationLimit =
+    lead.segment === "prediction" && !secondaryRoute
+      ? 1
+      : secondaryRoute
+        ? 3
+        : 2;
+  const recommendations = orderedSlugs.slice(0, recommendationLimit).map((slug) => {
+    const base =
+      segmentRecommendations.find((item) => item.slug === slug) || {
+        slug,
+        reason: operatorCatalog[slug]?.blurb || ""
+      };
+    return base;
+  });
 
   const cards = recommendations
     .map((item, index) => {
@@ -1211,8 +1289,8 @@ function renderResultsPage(lead) {
 
       const isBestMatch = index === 0;
       const ctaText = isBestMatch
-        ? `See ${operator.name}'s sign-up offer`
-        : `Compare ${operator.name}`;
+        ? `Open ${operator.name}`
+        : `Compare ${operator.name} now`;
       const cardClass = isBestMatch
         ? "result-card result-card-featured"
         : "result-card";
@@ -1250,6 +1328,13 @@ function renderResultsPage(lead) {
         <h1>${escapeHtml(copy.headline)}</h1>
         <p>${escapeHtml(copy.intro)}</p>
       </section>
+      ${
+        lead.state_override
+          ? `<p class="notice">Online sportsbooks appear limited in ${escapeHtml(
+              getLeadAnswer(lead, "state", "your state")
+            )}, so we prioritized prediction-market options that should be more accessible.</p>`
+          : ""
+      }
       <section class="results-grid">
         ${cards}
       </section>
@@ -1317,22 +1402,48 @@ async function renderAdminDashboard() {
 
   const rows = db.leads
     .slice()
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt || b.created_at || 0) -
+        new Date(a.createdAt || a.created_at || 0)
+    )
     .map((lead) => {
-      const clicked = lead.clickedOperators.length
+      const legacyClicks = Array.isArray(lead.clickedOperators)
         ? lead.clickedOperators
+        : [];
+      const clicked = legacyClicks.length
+        ? legacyClicks
             .map((slug) => operatorCatalog[slug]?.name || slug)
             .join(", ")
         : "None";
       const utmSource = lead.utms?.utm_source || "Direct";
+      const marketType = getLeadAnswer(lead, "market_type", "-");
+      const state = getLeadAnswer(lead, "state", "");
+      const primaryRoute = lead.primary_route || "-";
+      const metaBadges = [
+        `market: ${marketType}`,
+        state ? `state: ${state}` : "",
+        lead.state_override ? "override" : "",
+        `route: ${primaryRoute}`,
+        lead.clicked_primary ? "clicked primary" : "",
+        lead.clicked_secondary ? "clicked secondary" : ""
+      ]
+        .filter(Boolean)
+        .join(" ");
       return `<tr>
         <td>${lead.id}</td>
         <td>${escapeHtml(lead.email || "Pending")}</td>
-        <td>${escapeHtml(lead.segment)}</td>
-        <td>${escapeHtml(lead.answers.state || "")}</td>
+        <td>${escapeHtml(lead.segment || "")} <span>${escapeHtml(metaBadges)}</span></td>
+        <td>${lead.ltv_score != null ? lead.ltv_score : "-"}</td>
+        <td>${escapeHtml(getLeadAnswer(lead, "intent", ""))}</td>
+        <td>${escapeHtml(getLeadAnswer(lead, "experience", ""))}</td>
+        <td>${escapeHtml(getLeadAnswer(lead, "interest", ""))}</td>
+        <td>${escapeHtml(state || "-")}</td>
         <td>${escapeHtml(utmSource)}</td>
         <td>${escapeHtml(clicked)}</td>
-        <td>${escapeHtml(new Date(lead.createdAt).toLocaleString())}</td>
+        <td>${escapeHtml(
+          new Date(lead.createdAt || lead.created_at || Date.now()).toLocaleString()
+        )}</td>
       </tr>`;
     })
     .join("");
@@ -1384,6 +1495,10 @@ async function renderAdminDashboard() {
               <th>ID</th>
               <th>Email</th>
               <th>Segment</th>
+              <th>LTV</th>
+              <th>Intent</th>
+              <th>Experience</th>
+              <th>Interest</th>
               <th>State</th>
               <th>UTM source</th>
               <th>Clicked operator</th>
@@ -1393,7 +1508,7 @@ async function renderAdminDashboard() {
           <tbody>
             ${
               rows ||
-              '<tr><td colspan="7">No users yet. Funnel metrics will populate as traffic arrives.</td></tr>'
+              '<tr><td colspan="11">No users yet. Funnel metrics will populate as traffic arrives.</td></tr>'
             }
           </tbody>
         </table>
@@ -1478,20 +1593,6 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    if (req.method === "GET" && pathname === "/quiz/message") {
-      const answers = session.quizAnswers || {};
-      if (!answers[questions[0].key]) {
-        redirect(res, "/quiz/1");
-        return;
-      }
-      if (!answers[questions[1].key]) {
-        redirect(res, "/quiz/2");
-        return;
-      }
-      sendHtml(res, renderQuizMessage(session));
-      return;
-    }
-
     // ---- quiz step routes ----
 
     const quizMatch = pathname.match(/^\/quiz\/(\d+)$/);
@@ -1503,13 +1604,32 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      // Ensure all prior steps are answered
       const answers = session.quizAnswers || {};
-      for (let i = 0; i < step - 1; i++) {
+      const answeredFirstFour =
+        answers.market_type &&
+        answers.interest &&
+        answers.experience &&
+        answers.intent;
+      const preliminarySegment = answeredFirstFour
+        ? determineSegment(answers)
+        : null;
+      const shouldAskState = preliminarySegment !== "prediction";
+      const maxStep = shouldAskState ? 5 : 4;
+
+      if (step > maxStep) {
+        redirect(res, `/quiz/${maxStep}`);
+        return;
+      }
+
+      for (let i = 0; i < Math.min(step - 1, 4); i++) {
         if (!answers[questions[i].key]) {
           redirect(res, `/quiz/${i + 1}`);
           return;
         }
+      }
+      if (step === 5 && !shouldAskState) {
+        redirect(res, "/quiz/4");
+        return;
       }
 
       if (req.method === "GET") {
@@ -1540,7 +1660,7 @@ const server = http.createServer(async (req, res) => {
 
         const question = questions[step - 1];
         const answer = (form[question.key] || "").trim();
-        const isValidAnswer = question.options.includes(answer);
+        const isValidAnswer = question.options.map(getOptionValue).includes(answer);
         if (!answer || !isValidAnswer) {
           sendHtml(res, renderQuizStep(step, session), 400);
           return;
@@ -1549,22 +1669,65 @@ const server = http.createServer(async (req, res) => {
         if (!session.quizAnswers) session.quizAnswers = {};
         session.quizAnswers[question.key] = answer;
 
-        if (step < questions.length) {
-          if (step === 2) {
-            redirect(res, "/quiz/message");
-          } else {
-            redirect(res, `/quiz/${step + 1}`);
-          }
-        } else {
-          // Last step — create lead and move to email gate
-          const lead = await createLead({
-            ...session.quizAnswers,
-            utms: session.utms || {}
-          });
-          session.currentLeadId = lead.id;
-          session.resultsTrackedForLeadId = null;
-          redirect(res, "/email");
+        if (step < 4) {
+          redirect(res, `/quiz/${step + 1}`);
+          return;
         }
+
+        if (step === 4) {
+          const routingProfile = determineRoutingProfile(session.quizAnswers);
+          if (routingProfile.segment === "prediction") {
+            const lead = await createLead({
+              ...session.quizAnswers,
+              utms: session.utms || {}
+            });
+            session.currentLeadId = lead.id;
+            session.resultsTrackedForLeadId = null;
+            redirect(res, "/email");
+            return;
+          }
+          redirect(res, "/quiz/5");
+          return;
+        }
+
+        const state = session.quizAnswers.state;
+        const routingProfile = determineRoutingProfile(session.quizAnswers);
+        const stateOverride = !isSportsbookLegal(state);
+        const leadAnswers = {
+          ...session.quizAnswers,
+          state_override: stateOverride,
+          utms: session.utms || {}
+        };
+        if (stateOverride) {
+          leadAnswers.market_type = "prediction";
+        }
+
+        const lead = await createLead(leadAnswers);
+        if (stateOverride) {
+          await updateLead(lead.id, (entry) => {
+            entry.segment = "prediction";
+            entry.market_type = session.quizAnswers.market_type;
+            entry.answers.market_type = session.quizAnswers.market_type;
+            entry.state_override = true;
+            entry.ltv_score = routingProfile.ltv_score;
+            const reroute = routeUser("prediction", {
+              interest: session.quizAnswers.interest,
+              market_type: session.quizAnswers.market_type
+            });
+            entry.primary_route = reroute.primary_route;
+            entry.secondary_route = reroute.secondary_route;
+          });
+          await trackEvent("state_override", lead.id, {
+            state,
+            market_type: session.quizAnswers.market_type,
+            interest: session.quizAnswers.interest,
+            preliminary_segment: routingProfile.segment
+          });
+        }
+
+        session.currentLeadId = lead.id;
+        session.resultsTrackedForLeadId = null;
+        redirect(res, "/email");
         return;
       }
     }
@@ -1668,11 +1831,25 @@ const server = http.createServer(async (req, res) => {
       }
 
       await updateLead(lead.id, (entry) => {
+        if (!Array.isArray(entry.clickedOperators)) {
+          entry.clickedOperators = [];
+        }
         if (!entry.clickedOperators.includes(slug)) {
           entry.clickedOperators.push(slug);
         }
+        if (slug === entry.primary_route) entry.clicked_primary = true;
+        if (slug === entry.secondary_route) entry.clicked_secondary = true;
       });
-      await trackEvent("operator_click", lead.id, { operator: slug });
+      const routePosition =
+        slug === lead.primary_route
+          ? "primary"
+          : slug === lead.secondary_route
+            ? "secondary"
+            : "other";
+      await trackEvent("operator_click", lead.id, {
+        operator: slug,
+        route_position: routePosition
+      });
       redirect(res, operator.url);
       return;
     }
